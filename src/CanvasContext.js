@@ -82,7 +82,7 @@ export const CanvasProvider = ({children}) => {
         context.lineCap = 'round'
         context.lineJoin = 'round'
         // context.strokeStyle = getRandomColor();
-        context.lineWidth = 50;
+        context.lineWidth = 35;
         contextRef.current = context;
     };
 
@@ -167,7 +167,7 @@ export const CanvasProvider = ({children}) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             sendAlert()
-        }, 1500);
+        }, 100);
         return () => clearTimeout(timer);
     },)
 
