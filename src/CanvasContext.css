@@ -1,0 +1,19 @@
+.displayAlert{
+    background-color: white;
+    position: absolute;
+    border: black solid 1px;
+    padding: 2px 2px 2px 2px;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 1s linear;
+    /*transition: opacity 250ms linear;*/
+}
+.noDisplayAlert{
+    background-color: white;
+    position: absolute;
+    border: black solid 1px;
+    padding: 2px 2px 2px 2px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+}
