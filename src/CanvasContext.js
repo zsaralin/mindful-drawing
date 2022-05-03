@@ -87,8 +87,6 @@ export const CanvasProvider = ({children}) => {
     };
 
     const startDrawingTouch = ({nativeEvent}) => {
-        movementX = null
-        movementY = null
 
         const rect = nativeEvent.target.getBoundingClientRect();
         const offsetX = nativeEvent.targetTouches[0].pageX - rect.left;
@@ -102,8 +100,6 @@ export const CanvasProvider = ({children}) => {
     };
 
     const startDrawingMouse = ({nativeEvent}) => {
-        movementXM = null
-        movementYM = null
 
         const { offsetX, offsetY } = nativeEvent;
         contextRef.current.strokeStyle = getRandomColor();
@@ -200,7 +196,7 @@ export const CanvasProvider = ({children}) => {
                 {/*style = {{left: '50px', top: '50px'}}>*/}
                 {alert}</div>
             {/*<div style={{position: 'absolute', left: '30px', top: '30px', color: 'black'}}>{x} {xM} {y} {yM} {alert}</div>*/}
-            <div style={{position: 'absolute', left: '30px', top: '30px', color: 'black'}}>movementX: {movementX} movementY: {movementY} movementXM: {movementXM} movementYM: {movementYM}</div>
+            {/*<div style={{position: 'absolute', left: '30px', top: '30px', color: 'black'}}>movementX: {movementX} movementY: {movementY} movementXM: {movementXM} movementYM: {movementYM}</div>*/}
 
         </CanvasContext.Provider>
     );
