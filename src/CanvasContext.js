@@ -59,10 +59,10 @@ function useTouch() {
 }
 
 export const CanvasProvider = ({children}) => {
-    const {x, y, movementX, movementY} = useTouch();
-    const {xM, yM, movementXM, movementYM} = useMouse();
+    let {x, y, movementX, movementY} = useTouch();
+    let {xM, yM, movementXM, movementYM} = useMouse();
 
-  const [isDrawing, setIsDrawing] = useState(false)
+    const [isDrawing, setIsDrawing] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
     const [alert, setAlert] = useState(undefined)
 
@@ -87,6 +87,9 @@ export const CanvasProvider = ({children}) => {
     };
 
     const startDrawingTouch = ({nativeEvent}) => {
+        movementX = null
+        movementY = null
+
         const rect = nativeEvent.target.getBoundingClientRect();
         const offsetX = nativeEvent.targetTouches[0].pageX - rect.left;
         const offsetY = nativeEvent.targetTouches[0].pageY - rect.top;
@@ -99,6 +102,9 @@ export const CanvasProvider = ({children}) => {
     };
 
     const startDrawingMouse = ({nativeEvent}) => {
+        movementXM = null
+        movementYM = null
+
         const { offsetX, offsetY } = nativeEvent;
         contextRef.current.strokeStyle = getRandomColor();
         contextRef.current.beginPath();
@@ -143,17 +149,20 @@ export const CanvasProvider = ({children}) => {
 
     function sendAlert() {
         if (isDrawing) {
-            if ((Math.abs(movementX) > 20 || Math.abs(movementY) > 20 ) ||
-                (Math.abs(movementXM) > 20 || Math.abs(movementYM) > 20)) {
-                console.log('slow down' + ' ' + movementXM + ' ' + movementYM)
+            if (movementXM === null && movementYM === null && (Math.abs(movementX) + Math.abs(movementY) > 10 ) ||
+                (movementX === null & movementY === null && (Math.abs(movementXM)+ Math.abs(movementYM) > 10))) {
+                console.log('slow down' + ' ' + Math.abs(movementXM) + ' ' + Math.abs(movementYM))
                 setAlert('Slow Down')
                 setShowAlert(true)
-            } else if ((Math.abs(movementX) < 2 && Math.abs(movementY) < 2 ) ||
-                (Math.abs(movementXM) < 2 && Math.abs(movementYM) < 2)) {
+            }
+            else if  ((movementXM === null && movementYM === null && (Math.abs(movementX) + Math.abs(movementY) < 2 )) ||
+                (movementX === null && movementY === null && (Math.abs(movementXM) + Math.abs(movementYM) < 2 ))) {
+                console.log('move fast' + ' ' + (Math.abs(movementXM) + Math.abs(movementYM)))
+                console.log('movementX' + movementX)
                 setAlert('Move Faster')
-                console.log('move fast' + ' ' + movementXM + ' ' + movementYM)
                 setShowAlert(true)
-            } else {
+            }
+            else {
                 setShowAlert(false)
                 console.log('good speed' + ' ' + movementXM + ' ' + movementYM)
             }
@@ -167,7 +176,7 @@ export const CanvasProvider = ({children}) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             sendAlert()
-        }, 100);
+        }, []);
         return () => clearTimeout(timer);
     },)
 
@@ -191,7 +200,7 @@ export const CanvasProvider = ({children}) => {
                 {/*style = {{left: '50px', top: '50px'}}>*/}
                 {alert}</div>
             {/*<div style={{position: 'absolute', left: '30px', top: '30px', color: 'black'}}>{x} {xM} {y} {yM} {alert}</div>*/}
-            {/*<div style={{position: 'absolute', left: '30px', top: '30px', color: 'black'}}>{movementX} {movementXM} {movementY} {movementYM}</div>*/}
+            <div style={{position: 'absolute', left: '30px', top: '30px', color: 'black'}}>movementX: {movementX} movementY: {movementY} movementXM: {movementXM} movementYM: {movementYM}</div>
 
         </CanvasContext.Provider>
     );
